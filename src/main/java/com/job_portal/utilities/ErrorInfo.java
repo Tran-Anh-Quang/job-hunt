@@ -7,16 +7,10 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ErrorInfo {
     String errorMessage;
     Integer errorCode;
     LocalDateTime timeStamp;
-
-    public ErrorInfo(String errorMessage, Integer errorCode, LocalDateTime timeStamp) {
-        this.errorMessage = errorMessage;
-        this.errorCode = errorCode;
-        this.timeStamp = timeStamp;
-    }
-    ;
 }

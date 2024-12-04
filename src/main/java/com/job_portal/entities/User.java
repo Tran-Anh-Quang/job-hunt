@@ -3,6 +3,7 @@ package com.job_portal.entities;
 import com.job_portal.dtos.UserDTO;
 import com.job_portal.enums.AccountType;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -12,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Document(collection = "users")
 public class User {
@@ -26,14 +28,6 @@ public class User {
 
     String password;
     AccountType accountType;
-
-    public User(Long id, String name, String email, String password, AccountType accountType) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.accountType = accountType;
-    }
 
     public UserDTO toDTO() {
         return new UserDTO(id, name, email, password, accountType);
