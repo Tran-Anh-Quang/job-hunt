@@ -26,5 +26,9 @@ public class AuthAPI {
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
-
+    @PostMapping("/send-otp/{email}")
+    public ResponseEntity<String> sendOTP(@PathVariable String email) throws JobPortalException {
+        var res = authService.sendOTP(email);
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
 }
