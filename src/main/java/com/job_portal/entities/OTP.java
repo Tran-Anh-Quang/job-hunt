@@ -19,5 +19,5 @@ public class OTP {
     @Id
     String email;
     String otp;
-    LocalDateTime timeStamp;
+    LocalDateTime expiryTime;
 }

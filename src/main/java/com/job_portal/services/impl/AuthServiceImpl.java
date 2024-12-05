@@ -47,7 +47,7 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
 
         String otp = Utilities.otpGenerator();
-        OTP otpObj = new OTP(email, otp, LocalDateTime.now());
+        OTP otpObj = new OTP(email, otp, LocalDateTime.now().plusMinutes(5));
         otpRepository.save(otpObj);
 
         MimeMessage message = javaMailSender.createMimeMessage();
@@ -63,12 +63,15 @@ public class AuthServiceImpl implements AuthService {
     public Boolean verifyOTP(String email, String otp) throws JobPortalException {
         var OTPEntity = otpRepository.findById(email)
                 .orElseThrow(() -> new JobPortalException("OTP_NOT_FOUND"));
-        var otpExpiryTime = OTPEntity.getTimeStamp().plusMinutes(5);
-        if (otpExpiryTime.isBefore(LocalDateTime.now())) {
-            throw new JobPortalException("OTP_EXPIRED");
-        } else if (!OTPEntity.getOtp().equals(otp)) {
+
+        if (!OTPEntity.getOtp().equals(otp)) {
             throw new JobPortalException("INVALID_OTP");
         }
+
+        if (OTPEntity.getExpiryTime().isBefore(LocalDateTime.now())) {
+            throw new JobPortalException("OTP_EXPIRED");
+        }
+
         otpRepository.delete(OTPEntity);
         return true;
     }
