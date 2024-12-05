@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Base64;
 import java.util.List;
 
 @Data
@@ -24,11 +25,15 @@ public class Profile {
     String company;
     String location;
     String about;
+    byte[] picture;
+    Long totalExperience;
     List<String> skills;
     List<Experience> experience;
     List<Certification> certification;
 
     public ProfileDTO toDTO() {
-        return new ProfileDTO(id, email, jobTitle, company, location, about, skills, experience, certification);
+        return new ProfileDTO(id, email, jobTitle, company, location, about,
+                picture!=null? Base64.getEncoder().encodeToString(picture) : null,
+                totalExperience, skills, experience, certification);
     }
 }
