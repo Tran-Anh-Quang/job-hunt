@@ -58,4 +58,18 @@ public class AuthServiceImpl implements AuthService {
         javaMailSender.send(message);
         return true;
     }
+
+    @Override
+    public Boolean verifyOTP(String email, String otp) throws JobPortalException {
+        var OTPEntity = otpRepository.findById(email)
+                .orElseThrow(() -> new JobPortalException("OTP_NOT_FOUND"));
+        var otpExpiryTime = OTPEntity.getTimeStamp().plusMinutes(5);
+        if (otpExpiryTime.isBefore(LocalDateTime.now())) {
+            throw new JobPortalException("OTP_EXPIRED");
+        } else if (!OTPEntity.getOtp().equals(otp)) {
+            throw new JobPortalException("INVALID_OTP");
+        }
+        otpRepository.delete(OTPEntity);
+        return true;
+    }
 }

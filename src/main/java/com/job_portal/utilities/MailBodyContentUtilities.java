@@ -64,11 +64,11 @@ public class MailBodyContentUtilities {
                 "        </div>\n" +
                 "        <div class=\"otp-box\">" + otp + "</div>\n" +
                 "        <div class=\"message\">\n" +
-                "            <p>This OTP code is valid for <strong>10 minutes</strong>. If you did not request this, please ignore this email.</p>\n" +
+                "            <p>This OTP code is valid for <strong>5 minutes</strong>. If you did not request this, please ignore this email.</p>\n" +
                 "            <p>Thank you for using our service!</p>\n" +
                 "        </div>\n" +
                 "        <div class=\"footer\">\n" +
-                "            © 2024 <strong>Your Company Name</strong>. All rights reserved.\n" +
+                "            © 2024 <strong>Job Portal</strong>. All rights reserved.\n" +
                 "        </div>\n" +
                 "    </div>\n" +
                 "</body>\n" +
