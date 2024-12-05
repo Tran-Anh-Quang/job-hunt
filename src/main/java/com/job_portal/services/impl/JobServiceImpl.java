@@ -2,6 +2,7 @@ package com.job_portal.services.impl;
 
 import com.job_portal.dtos.ApplicantDTO;
 import com.job_portal.dtos.JobDTO;
+import com.job_portal.dtos.NotificationDTO;
 import com.job_portal.entities.Application;
 import com.job_portal.entities.Job;
 import com.job_portal.enums.ApplicationStatus;
@@ -9,6 +10,7 @@ import com.job_portal.enums.JobStatus;
 import com.job_portal.exceptions.JobPortalException;
 import com.job_portal.repositories.JobRepository;
 import com.job_portal.services.JobService;
+import com.job_portal.services.NotificationService;
 import com.job_portal.utilities.Utilities;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -24,12 +26,21 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class JobServiceImpl implements JobService {
     JobRepository jobRepository;
+    NotificationService notificationService;
 
     @Override
     public JobDTO jobPost(JobDTO jobDTO) throws JobPortalException {
         if (jobDTO.getId() == null) {
             jobDTO.setId(Utilities.getNextSequence("job"));
             jobDTO.setPostedOn(LocalDateTime.now());
+
+            NotificationDTO notificationDTO = new NotificationDTO();
+            notificationDTO.setUserId(jobDTO.getPostedBy());
+            notificationDTO.setMessage("Job posted for " + jobDTO.getJobTitle() + " at " + jobDTO.getCompany());
+            notificationDTO.setAction("Job Posted");
+            notificationDTO.setRoute("/posted-jobs/" + jobDTO.getId());
+
+            notificationService.sendNotification(notificationDTO);
         } else {
             jobRepository.findById(jobDTO.getId())
                     .orElseThrow(() -> new JobPortalException("JOB_NOT_FOUND"));
@@ -79,6 +90,16 @@ public class JobServiceImpl implements JobService {
                 x.setApplicationStatus(application.getApplicationStatus());
                 if (application.getApplicationStatus().equals(ApplicationStatus.INTERVIEW)) {
                     x.setInterviewDate(application.getInterviewDate());
+                    try {
+                        NotificationDTO notificationDTO = new NotificationDTO();
+                        notificationDTO.setUserId(x.getApplicantId());
+                        notificationDTO.setMessage("Interview scheduled for " + application.getInterviewDate());
+                        notificationDTO.setAction("Interview Scheduled");
+                        notificationDTO.setRoute("/job-history");
+                        notificationService.sendNotification(notificationDTO);
+                    } catch (JobPortalException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         }).toList();
