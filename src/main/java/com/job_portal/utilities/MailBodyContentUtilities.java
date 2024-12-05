@@ -28,7 +28,7 @@ public class MailBodyContentUtilities {
                 "            background-color: #4caf50;\n" +
                 "            padding: 10px 0;\n" +
                 "            color: #ffffff;\n" +
-                "            font-size: 20px;\n" +
+                "            font-size: 25px;\n" +
                 "            font-weight: bold;\n" +
                 "        }\n" +
                 "        .otp-box {\n" +

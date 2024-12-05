@@ -14,13 +14,17 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -74,5 +78,15 @@ public class AuthServiceImpl implements AuthService {
 
         otpRepository.delete(OTPEntity);
         return true;
+    }
+
+    @Scheduled(fixedRate = 60000)
+    public void removeExpiredOTPs() {
+        LocalDateTime expiryTime = LocalDateTime.now().minusMinutes(5);
+        List<OTP> expiredOTPs = otpRepository.findByExpiryTimeBefore(expiryTime);
+        if (!expiredOTPs.isEmpty()) {
+            otpRepository.deleteAll(expiredOTPs);
+            log.info("Deleted {} expired OTPs", expiredOTPs.size());
+        }
     }
 }
