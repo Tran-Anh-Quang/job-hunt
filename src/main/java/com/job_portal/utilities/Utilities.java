@@ -10,6 +10,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
+import java.security.SecureRandom;
+
 @Slf4j
 @Component
 public class Utilities {
@@ -36,5 +38,14 @@ public class Utilities {
             throw new JobPortalException("Unable to get sequence id for the key: " + key);
         }
         return sequence.getSeq();
+    }
+
+    public static String otpGenerator() {
+        StringBuilder otp = new StringBuilder();
+        SecureRandom random = new SecureRandom();
+        for (int i = 0; i < 6; i++) {
+            otp.append(random.nextInt(10));
+        }
+        return otp.toString();
     }
 }
