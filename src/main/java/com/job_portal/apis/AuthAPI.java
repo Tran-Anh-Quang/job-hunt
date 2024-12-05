@@ -1,9 +1,11 @@
 package com.job_portal.apis;
 
 import com.job_portal.dtos.LoginDTO;
+import com.job_portal.dtos.ResponseDTO;
 import com.job_portal.dtos.UserDTO;
 import com.job_portal.exceptions.JobPortalException;
 import com.job_portal.services.AuthService;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +29,8 @@ public class AuthAPI {
     }
 
     @PostMapping("/send-otp/{email}")
-    public ResponseEntity<String> sendOTP(@PathVariable String email) throws JobPortalException {
-        var res = authService.sendOTP(email);
-        return new ResponseEntity<>(res, HttpStatus.OK);
+    public ResponseEntity<ResponseDTO> sendOTP(@PathVariable String email) throws JobPortalException, MessagingException {
+        authService.sendOTP(email);
+        return new ResponseEntity<>(new ResponseDTO("OTP has been sent"), HttpStatus.OK);
     }
 }
