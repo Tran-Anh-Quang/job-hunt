@@ -6,17 +6,15 @@ import com.job_portal.exceptions.JobPortalException;
 import com.job_portal.repositories.ProfileRepository;
 import com.job_portal.services.ProfileService;
 import com.job_portal.utilities.Utilities;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
 @Service
+@RequiredArgsConstructor
 public class ProfileServiceImpl implements ProfileService {
     ProfileRepository profileRepository;
-
-    public ProfileServiceImpl(ProfileRepository profileRepository) {
-        this.profileRepository = profileRepository;
-    }
 
     @Override
     public Long createProfile(String email) throws JobPortalException {
