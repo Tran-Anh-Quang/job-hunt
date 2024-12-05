@@ -28,8 +28,9 @@ public class User {
 
     String password;
     AccountType accountType;
+    Long profileId;
 
     public UserDTO toDTO() {
-        return new UserDTO(id, name, email, password, accountType);
+        return new UserDTO(id, name, email, password, accountType, profileId);
     }
 }

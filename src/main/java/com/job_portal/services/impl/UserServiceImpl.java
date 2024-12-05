@@ -4,6 +4,7 @@ import com.job_portal.dtos.UserDTO;
 import com.job_portal.entities.User;
 import com.job_portal.exceptions.JobPortalException;
 import com.job_portal.repositories.UserRepository;
+import com.job_portal.services.ProfileService;
 import com.job_portal.services.UserService;
 import com.job_portal.utilities.Utilities;
 import lombok.AccessLevel;
@@ -20,6 +21,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     UserRepository userRepository;
     PasswordEncoder passwordEncoder;
+    ProfileService profileService;
 
     @Override
     public UserDTO registeredUser(UserDTO userDTO) throws JobPortalException {
@@ -27,6 +29,7 @@ public class UserServiceImpl implements UserService {
         if (userOtp.isPresent()) {
             throw new JobPortalException("USER_FOUND");
         }
+        userDTO.setProfileId(profileService.createProfile(userDTO.getEmail()));
         userDTO.setId(Utilities.getNextSequence("user"));
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         var user = userDTO.toEntity();
