@@ -1,6 +1,5 @@
 package com.job_portal.entities;
 
-import com.job_portal.dtos.Applicant;
 import com.job_portal.dtos.JobDTO;
 import com.job_portal.enums.JobStatus;
 import lombok.*;
@@ -32,9 +31,10 @@ public class Job {
     String description;
     List<String> skills;
     JobStatus jobStatus;
+    Long postedBy;
 
     public JobDTO toDTO() {
-        return new JobDTO(id, jobTitle, company, applicants, about, experience,
-                jobType, location, packageOffered, postedOn, description, skills, jobStatus);
+        return new JobDTO(id, jobTitle, company, applicants!=null?applicants.stream().map(Applicant::toDTO).toList():null, about, experience,
+                jobType, location, packageOffered, postedOn, description, skills, jobStatus, postedBy);
     }
 }
