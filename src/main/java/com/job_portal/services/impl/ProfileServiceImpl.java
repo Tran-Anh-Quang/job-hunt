@@ -6,13 +6,16 @@ import com.job_portal.exceptions.JobPortalException;
 import com.job_portal.repositories.ProfileRepository;
 import com.job_portal.services.ProfileService;
 import com.job_portal.utilities.Utilities;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ProfileServiceImpl implements ProfileService {
     ProfileRepository profileRepository;
 

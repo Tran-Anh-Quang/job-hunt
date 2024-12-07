@@ -28,6 +28,7 @@ public class NotificationAPI {
 
     @PutMapping("/read/{notificationId}")
     public ResponseEntity<ResponseDTO> readNotification(@PathVariable Long notificationId) throws JobPortalException {
+        notificationService.markAsRead(notificationId);
         return new ResponseEntity<>(new ResponseDTO("Notification marked as read"), HttpStatus.OK);
     }
 }
